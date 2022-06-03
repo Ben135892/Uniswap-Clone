@@ -4,13 +4,11 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
 } from 'react-router-dom';
 
 
 import { address as defaultExchangeAddress, abi as exchangeAbi } from "./Exchange.json";
 import { address as defaultTokenAddress, abi as tokenAbi } from "./Token.json";
-import { address as factoryAddress, abi as factoryAbi } from "./Factory.json";
 
 import convertToEth from './utils/convertToEth';
 import getContract from './utils/getContract';
@@ -19,6 +17,8 @@ import Swap from './components/Swap';
 import Pool from './components/Pool';
 import AddToken from './components/AddToken';
 import SelectToken from './components/SelectToken';
+import Navbar from './components/Navbar';
+import round from './utils/round';
 
 function App() {
   const [connectedAccount, setConnectedAccount] = useState(null);
@@ -41,11 +41,10 @@ function App() {
   } 
 
   const getUserInfo = async () => {
-
     const tokenContract = getContract(tokenAddress, tokenAbi);
     const tokens = await tokenContract.balanceOf(connectedAccount);
     setUserTokens(tokens.toString());
-
+    
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     let userEth = await provider.getBalance(connectedAccount);
     setUserEth(userEth.toString());
@@ -65,32 +64,29 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(tokenIndex);
     if (!connectedAccount) return;
     getUserInfo();
   }, [connectedAccount, tokenIndex]);
 
-  useEffect(() => {
-    console.log(tokenSymbol);
-  });
-
   return (
     <div className="App">
-      <h1>Your Tokens: {convertToEth(userTokens)}</h1>
-      <h1>Your Eth: {convertToEth(userEth)}</h1>
-      <AddToken setAllTokens={setAllTokens} setAllExchanges={setAllExchanges} allTokens={allTokens} allExchanges={allExchanges} />
-      <SelectToken 
-        allTokens={allTokens}
-        index={tokenIndex}
-        setIndex={setTokenIndex}
-        getUserInfo={getUserInfo}
-      />
+      <h2>Your {tokenSymbol}: {round(convertToEth(userTokens))}</h2>
+      <h2>Your Eth: {round(convertToEth(userEth))}</h2>
       <Router>
+        <Navbar />
+        <AddToken setAllTokens={setAllTokens} setAllExchanges={setAllExchanges} allTokens={allTokens} allExchanges={allExchanges} />
+        <SelectToken 
+          allTokens={allTokens}
+          index={tokenIndex}
+          setIndex={setTokenIndex}
+          getUserInfo={getUserInfo}
+        />
         <Routes>
           <Route path="/" element={
             <Swap 
               exchangeAddress={exchangeAddress} 
               tokenAddress={tokenAddress}
+              tokenSymbol={tokenSymbol}
               getUserInfo={getUserInfo}
             />
           }>
@@ -99,6 +95,7 @@ function App() {
             <Pool 
               exchangeAddress={exchangeAddress}
               tokenAddress={tokenAddress}
+              tokenSymbol={tokenSymbol}
               getUserInfo={getUserInfo}
               connectedAccount={connectedAccount}
             />

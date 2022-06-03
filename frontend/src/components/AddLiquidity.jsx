@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { ethers, BigNumber } from "ethers";
+import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/Button";
 
 import { abi as exchangeAbi } from "../Exchange.json";
 import { abi as tokenAbi } from "../Token.json";
@@ -11,10 +13,10 @@ const requiredAmount = (inputAmount, inputReserve, secondReserve) => {
     return BigNumber.from(inputAmount).mul(secondReserve).div(inputReserve);
 }   
 
-const AddLiquidity = ({ exchangeAddress, tokenAddress, userEth, userTokens, getUserInfo, getPoolInfo, exchangeReserve, exchangeEth }) => {
+const AddLiquidity = ({ exchangeAddress, tokenAddress, tokenSymbol, userEth, userTokens, getUserInfo, getPoolInfo, exchangeReserve, exchangeEth }) => {
     const noLiquidity = exchangeEth == 0;
-    const [ethInput, setEthInput] = useState(0);
-    const [tokenInput, setTokenInput] = useState(0);
+    const [ethInput, setEthInput] = useState('');
+    const [tokenInput, setTokenInput] = useState('');
 
     const requiredTokens = (inputEth) => {
         return requiredAmount(inputEth, exchangeEth, exchangeReserve);
@@ -40,7 +42,6 @@ const AddLiquidity = ({ exchangeAddress, tokenAddress, userEth, userTokens, getU
     }
 
     const tokenInputChange = async (e) => {
-        console.log("changed")
         let tokenInput = e.target.value;
         setTokenInput(tokenInput);
         if (noLiquidity) return;
@@ -73,9 +74,17 @@ const AddLiquidity = ({ exchangeAddress, tokenAddress, userEth, userTokens, getU
 
     return (
         <div>
-            Eth <input value={ethInput} onChange={ethInputChange} />
-            Token <input value={tokenInput} onChange={tokenInputChange} />
-            <button onClick={addLiquidity}>Add Liquidity</button>
+            <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Eth</Form.Label>
+                <Form.Control autoComplete={"off"} value={ethInput} onChange={ethInputChange} placeholder="Amount" />
+            </Form.Group>
+            <Form.Group className="mb-3" >
+                <Form.Label>{tokenSymbol}</Form.Label>
+                <Form.Control autoComplete={"off"} value={tokenInput} onChange={tokenInputChange} placeholder="Amount" />
+            </Form.Group>
+            <Button className="button" variant="dark" onClick={addLiquidity}>Add Liquidity</Button>
+            </Form>
         </div>
     )
 }

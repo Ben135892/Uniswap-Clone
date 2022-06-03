@@ -7,12 +7,13 @@ import AddLiquidity from './AddLiquidity';
 import convertToEth from '../utils/convertToEth';
 import getContract from '../utils/getContract';
 import CreatePool from './CreatePool';
+import round from '../utils/round';
 
-const Pool = ({ exchangeAddress, tokenAddress, userEth, userTokens, getUserInfo, connectedAccount }) => {
+const Pool = ({ exchangeAddress, tokenAddress, tokenSymbol, userEth, userTokens, getUserInfo, connectedAccount }) => {
     const [exchangeReserve, setExchangeReserve] = useState(0); // reserve of pool in token
     const [exchangeEth, setExchangeEth] = useState(0); // balance of pool in eth
     const [lpTokens, setLpTokens] = useState(0);
-    console.log(exchangeAddress);
+
     const getPoolInfo = async () => {   
         const contract = getContract(exchangeAddress, exchangeAbi);
         const reserve = await contract.getReserve();
@@ -32,13 +33,14 @@ const Pool = ({ exchangeAddress, tokenAddress, userEth, userTokens, getUserInfo,
       }, [connectedAccount, exchangeAddress]);
 
     return (
-        <div>
-            <h1>Token Reserves: {convertToEth(exchangeReserve)}</h1>
-            <h1>ETH Reserves: {convertToEth(exchangeEth)}</h1>
-            <h1>LP Tokens: {convertToEth(lpTokens)}</h1>
+        <div className="Pool">
+            <h2>{tokenSymbol} Reserves: {round(convertToEth(exchangeReserve))}</h2>
+            <h2>ETH Reserves: {round(convertToEth(exchangeEth))}</h2>
+            <h2>LP Tokens: {round(convertToEth(lpTokens))}</h2>
             <AddLiquidity 
                 exchangeAddress={exchangeAddress}
                 tokenAddress={tokenAddress}
+                tokenSymbol={tokenSymbol}
                 userEth={userEth}
                 userTokens={userTokens}
                 getUserInfo={getUserInfo}

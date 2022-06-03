@@ -62,6 +62,10 @@ const AddToken = ({ allTokens, allExchanges, setAllTokens, setAllExchanges }) =>
     }
 
     const addToken = () => {
+        if (tokenAddress == '') {
+            setError('Invalid token address');
+            return;
+        }
         setAdded(false);
         if (allTokens.map(token => token.address).includes(tokenAddress)) {
             setError('Token already added!');
@@ -80,7 +84,7 @@ const AddToken = ({ allTokens, allExchanges, setAllTokens, setAllExchanges }) =>
 
     return (
         <div>
-            <Button variant="primary" onClick={handleShow}>Add Token</Button>
+            <Button className="button" variant="primary" onClick={handleShow}>Add Token</Button>
             <Modal show={show} onHide={handleClose} animation={false}>
                 <Modal.Header closeButton>
                 <Modal.Title>Add Token</Modal.Title>
@@ -104,8 +108,6 @@ const AddToken = ({ allTokens, allExchanges, setAllTokens, setAllExchanges }) =>
                 </Modal.Footer>
             </Modal>
         </div>
-
-        
     )
 }
 

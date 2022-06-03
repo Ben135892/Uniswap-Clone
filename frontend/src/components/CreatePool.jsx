@@ -63,7 +63,7 @@ const CreatePool = () => {
 
     return (
         <div>
-            <button onClick={handleShow}>Create Pool</button>
+            <Button className="button" onClick={handleShow}>Create Pool</Button>
             <Modal show={show} onHide={handleClose} animation={false}>
                 <Modal.Header closeButton>
                 <Modal.Title>Create Pool</Modal.Title>
