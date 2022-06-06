@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import { abi as exchangeAbi } from '../Exchange.json';
 import getContract from "../utils/getContract";
 
-function RemoveLiquidity({ exchangeAddress }) {
+function RemoveLiquidity({ exchangeAddress, getUserInfo, getPoolInfo }) {
     const [tokens, setTokens] = useState('');
 
     const onTokenChange = (e) => {
@@ -18,6 +18,9 @@ function RemoveLiquidity({ exchangeAddress }) {
         const tokenAmount = ethers.utils.parseUnits(tokens, "ether");
         const transaction = await contract.removeLiquidity(tokenAmount);
         await transaction.wait();
+
+        await getUserInfo();
+        await getPoolInfo();
     }
 
     return (

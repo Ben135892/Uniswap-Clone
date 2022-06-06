@@ -49,7 +49,7 @@ const Pool = ({ exchangeAddress, tokenAddress, tokenSymbol, userEth, userTokens,
                 exchangeReserve={exchangeReserve}
                 exchangeEth={exchangeEth}
             />
-            <RemoveLiquidity exchangeAddress={exchangeAddress} />
+            <RemoveLiquidity exchangeAddress={exchangeAddress} getUserInfo={getUserInfo} getPoolInfo={getPoolInfo} />
             <CreatePool />
         </div>
     )

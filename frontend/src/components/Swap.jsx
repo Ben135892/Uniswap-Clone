@@ -30,7 +30,7 @@ const Swap = ({ exchangeAddress, tokenAddress, tokenSymbol, userEth, userTokens,
           const exchangeContract = getContract(exchangeAddress, exchangeAbi);
           const tokenAmount = await exchangeContract.getTokenAmount(ethInput);
           setTokenInput(convertToEth(tokenAmount));
-          setMinAmount(convertToEth(tokenAmount) * 0.9);
+          setMinAmount(convertToEth(tokenAmount.mul(90).div(100)));
         }
     }
     
@@ -49,7 +49,7 @@ const Swap = ({ exchangeAddress, tokenAddress, tokenSymbol, userEth, userTokens,
             const exchangeContract = getContract(exchangeAddress, exchangeAbi);
             const ethAmount = await exchangeContract.getEthAmount(tokenInput);
             setEthInput(convertToEth(ethAmount));
-            setMinAmount(convertToEth(ethAmount) * 0.9);
+            setMinAmount(convertToEth(ethAmount.mul(90).div(100)));
         }
     }
     
