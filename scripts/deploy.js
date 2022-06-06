@@ -23,6 +23,7 @@ async function main() {
     await transaction.wait();
 
     const exchangeAddress = await factory.getExchange(token.address);
+    console.log(exchangeAddress);
     console.log(`Exchange address: ${exchange.address}`);
 
     const factoryData = {
@@ -36,7 +37,7 @@ async function main() {
     }
 
     const exchangeData = {
-        address: exchangeAddress,
+        address: exchange.address,
         abi: JSON.parse(exchange.interface.format("json"))
     }
 

@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-
+import Button from 'react-bootstrap/esm/Button';
 
 import { address as defaultExchangeAddress, abi as exchangeAbi } from "./Exchange.json";
 import { address as defaultTokenAddress, abi as tokenAbi } from "./Token.json";
@@ -44,7 +44,7 @@ function App() {
     const tokenContract = getContract(tokenAddress, tokenAbi);
     const tokens = await tokenContract.balanceOf(connectedAccount);
     setUserTokens(tokens.toString());
-    
+
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     let userEth = await provider.getBalance(connectedAccount);
     setUserEth(userEth.toString());
@@ -70,8 +70,14 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Your {tokenSymbol}: {round(convertToEth(userTokens))}</h2>
-      <h2>Your Eth: {round(convertToEth(userEth))}</h2>
+      {connectedAccount ? 
+        <>
+          <h2>Your {tokenSymbol}: {round(convertToEth(userTokens))}</h2>
+          <h2>Your Eth: {round(convertToEth(userEth))}</h2>
+        </>
+      : <Button className="connect" onClick={connectWalletHandler}>Connect Wallet</Button>
+      }
+      
       <Router>
         <Navbar />
         <AddToken setAllTokens={setAllTokens} setAllExchanges={setAllExchanges} allTokens={allTokens} allExchanges={allExchanges} />

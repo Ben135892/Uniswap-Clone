@@ -8,6 +8,7 @@ import convertToEth from '../utils/convertToEth';
 import getContract from '../utils/getContract';
 import CreatePool from './CreatePool';
 import round from '../utils/round';
+import RemoveLiquidity from './RemoveLiquidity';
 
 const Pool = ({ exchangeAddress, tokenAddress, tokenSymbol, userEth, userTokens, getUserInfo, connectedAccount }) => {
     const [exchangeReserve, setExchangeReserve] = useState(0); // reserve of pool in token
@@ -48,6 +49,7 @@ const Pool = ({ exchangeAddress, tokenAddress, tokenSymbol, userEth, userTokens,
                 exchangeReserve={exchangeReserve}
                 exchangeEth={exchangeEth}
             />
+            <RemoveLiquidity exchangeAddress={exchangeAddress} />
             <CreatePool />
         </div>
     )

@@ -1,20 +1,17 @@
 import { useState } from 'react';
-import { createBrowserHistory } from 'history';
+import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
 function Navbar() {
-    const [route, setRoute] = useState('swap');
+    const location = useLocation();
 
-    const swap = () => setRoute("swap");
-    const pool = () => setRoute("pool");
-
-    const swapClass = "link " + (route == "swap" ? "link-selected" : ""); 
-    const poolClass = "link " + (route == "pool" ? "link-selected" : ""); 
+    const swapClass = "link " + (location.pathname == "/" ? "link-selected" : ""); 
+    const poolClass = "link " + (location.pathname == "/pool" ? "link-selected" : ""); 
     return (
         <div className="nav">
-            <Link className={swapClass} onClick={swap} to="/">Swap</Link>
-            <Link className ={poolClass} onClick={pool} to="/pool">Pool</Link>
+            <Link className={swapClass} to="/">Swap</Link>
+            <Link className ={poolClass} to="/pool">Pool</Link>
         </div>
     );
 }

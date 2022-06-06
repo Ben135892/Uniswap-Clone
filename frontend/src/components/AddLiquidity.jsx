@@ -51,7 +51,6 @@ const AddLiquidity = ({ exchangeAddress, tokenAddress, tokenSymbol, userEth, use
         }
         tokenInput = ethers.utils.parseUnits(tokenInput, "ether");
         let required = requiredEth(tokenInput);
-        required = BigNumber.from(required);
         required = convertToEth(required);
         setEthInput(required);
     }
